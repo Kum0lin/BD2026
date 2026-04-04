@@ -3,6 +3,7 @@ package com.booking.userservice.configuration;
 import com.booking.userservice.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -27,7 +28,7 @@ public class SecurityFilterConfig {
                         .anyRequest().authenticated()
                 )
                 .headers(headers -> headers.frameOptions(frame -> frame.disable()))
-                .httpBasic();
+                .httpBasic(Customizer.withDefaults());
 
         return http.build();
     }
