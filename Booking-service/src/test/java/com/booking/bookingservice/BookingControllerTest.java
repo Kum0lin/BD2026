@@ -1,5 +1,7 @@
 package com.booking.bookingservice;
 
+import com.booking.bookingservice.repository.BookingRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -24,6 +26,14 @@ class BookingControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private BookingRepository bookingRepository;
+
+    @BeforeEach
+    void setUp() {
+        bookingRepository.deleteAll();
+    }
 
     @Test
     void createBookingReturnsSavedBooking() throws Exception {
@@ -83,6 +93,7 @@ class BookingControllerTest {
 
         mockMvc.perform(get("/bookings"))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(jsonPath("$[0].customerName").value("Alice"))
                 .andExpect(jsonPath("$[0].hotel.id").value(2));
     }
