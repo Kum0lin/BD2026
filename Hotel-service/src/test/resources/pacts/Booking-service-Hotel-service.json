@@ -1,0 +1,78 @@
+{
+  "consumer": {
+    "name": "Booking-service"
+  },
+  "provider": {
+    "name": "Hotel-service"
+  },
+  "interactions": [
+    {
+      "description": "request existing hotel by id",
+      "providerStates": [
+        {
+          "name": "hotel with id 1 exists"
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/hotels/1"
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": 1,
+          "name": "Hilton",
+          "location": "Riga"
+        },
+        "matchingRules": {
+          "body": {
+            "$.id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.name": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.location": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "description": "request missing hotel by id",
+      "providerStates": [
+        {
+          "name": "hotel with id 999 is missing"
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/hotels/999"
+      },
+      "response": {
+        "status": 404
+      }
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "3.0.0"
+    }
+  }
+}
